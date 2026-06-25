@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Spark Estimator</title>
+<meta name="theme-color" content="#ea580c" />
+<meta name="description" content="Mobile repair cost estimator for Spark Homes acquisitions" />
+<link rel="manifest" href="manifest.json" />
+<link rel="icon" href="icons/icon-192.png" />
+<link rel="apple-touch-icon" href="icons/icon-192.png" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          accent: {
+            50: '#fff7ed', 100: '#ffedd5', 200: '#fed7aa', 300: '#fdba74',
+            400: '#fb923c', 500: '#f97316', 600: '#ea580c', 700: '#c2410c',
+            800: '#9a3412', 900: '#7c2d12'
+          }
+        }
+      }
+    }
+  };
+</script>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body class="bg-slate-100 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
+
+  <div id="app" class="min-h-screen flex flex-col"></div>
+
+  <div id="toast-root" class="fixed bottom-20 left-0 right-0 z-50 flex flex-col items-center gap-2 pointer-events-none"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
