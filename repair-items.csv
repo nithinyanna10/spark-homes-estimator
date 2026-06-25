@@ -1,0 +1,109 @@
+section,group,id,name,cost,unit
+Interior/General,Flooring,ig-01,Refinish Hardwood Floor,2.35,sqft
+Interior/General,Flooring,ig-02,New Hardwoods 1.5",10,sqft
+Interior/General,Flooring,ig-03,New Hardwoods 2",4.75,sqft
+Interior/General,Flooring,ig-04,Hardwood Splicing,8.4,sqft
+Interior/General,Flooring,ig-05,Vinyl Plank,2.5,sqft
+Interior/General,Flooring,ig-06,Carpet,1.9,sqft
+Interior/General,Paint,ig-07,Interior Paint — 2 Tone,2.95,sqft
+Interior/General,Paint,ig-08,Drywall Repair,900,"1,000 sqft"
+Interior/General,Paint,ig-09,Wallpaper Removal,250,room
+Interior/General,Paint,ig-19,"Trim Out (Casing, Crown, Baseboard)",3.75,LF
+Interior/General,Doors,ig-10,Interior Door — Hollow Slab,125,ea.
+Interior/General,Doors,ig-11,Interior Door Hardware (Knob + Hinges + Labor),25,ea.
+Interior/General,Doors,ig-12,Bifold Door with Framing,400,ea.
+Interior/General,Doors,ig-13,Interior Door — Pre-hung,200,ea.
+Interior/General,Doors,ig-14,Front Entry Door,475,ea.
+Interior/General,Doors,ig-15,Front Entry Door Hardware,80,ea.
+Interior/General,Doors,ig-16,Exterior Door Hardware,75,handle
+Interior/General,Doors,ig-17,Exterior Insulated Side Door (Installed),500,ea.
+Interior/General,Doors,ig-18,Sliding Glass Door,1025,ea.
+Interior/General,Pest Control,ig-23,Bedbug Spray / Heat Treat,475,ea.
+Interior/General,Pest Control,ig-24,Termite Treatment,650,ea.
+Interior/General,Lighting,ig-22,Light Fixtures,70,100 sqft
+Interior/General,General,ig-20,MISC / Punch List,2650,flat
+Interior/General,General,ig-21,Finish Out Labor,1350,flat
+Interior/General,General,ig-25,Demo,1375,variable
+Interior/General,General,ig-26,Haul Off,725,load
+Interior/General,General,ig-27,Final Cleaning,325,flat
+Interior/General,General,ig-28,Staging,0.9,sqft
+Kitchen,Cabinets,kt-01,Hinges and Pulls,275,kitchen
+Kitchen,Cabinets,kt-02,Cabinets Uppers,125,LF
+Kitchen,Cabinets,kt-03,Cabinets Lowers,150,LF
+Kitchen,Cabinets,kt-04,Cabinet Door Faces Only,80,door
+Kitchen,Cabinets,kt-05,Cabinets (Labor & Paint),1100,kitchen
+Kitchen,Cabinets,kt-08,Misc Woodwork,500,variable
+Kitchen,Countertops & Tile,kt-06,"Granite + 4"" Splash Guard",40,LF
+Kitchen,Countertops & Tile,kt-07,Backsplash,725,house
+Kitchen,Countertops & Tile,kt-09,Tile — Large Areas,6.45,sqft
+Kitchen,Countertops & Tile,kt-10,Tile — Small Areas,10,sqft
+Kitchen,Countertops & Tile,kt-11,Undermount Kitchen Sink,325,ea.
+Kitchen,Appliances,kt-12,Microwave / Hood,500,ea.
+Kitchen,Appliances,kt-13,Range,725,ea.
+Kitchen,Appliances,kt-14,Wall Oven,1075,ea.
+Kitchen,Appliances,kt-15,Cooktop,550,ea.
+Kitchen,Appliances,kt-16,Dishwasher,575,ea.
+Kitchen,Appliances,kt-17,Fridge,1175,ea.
+Bathrooms,Vanity & Countertop,ba-01,Granite ($/LF),35,LF
+Bathrooms,Vanity & Countertop,ba-02,New Bottom Vanity,125,LF
+Bathrooms,Vanity & Countertop,ba-03,Home Depot Vanity w/ Sink (18"),225,ea.
+Bathrooms,Vanity & Countertop,ba-04,Toilet,150,ea.
+Bathrooms,Vanity & Countertop,ba-14,Undermount Sink,150,ea.
+Bathrooms,Vanity & Countertop,ba-15,Mirror,200,ea.
+Bathrooms,Tile,ba-05,Tile — Large Areas,5.8,sqft
+Bathrooms,Tile,ba-06,Tile — Small Areas,10,sqft
+Bathrooms,Tub & Shower,ba-07,Reglaze Tub or Chemical Clean,350,ea.
+Bathrooms,Tub & Shower,ba-08,Reglaze Tub + Surround,750,ea.
+Bathrooms,Tub & Shower,ba-09,Reglaze Shower,1325,ea.
+Bathrooms,Tub & Shower,ba-10,Tiled Shower Tear Out + Tile Install,3100,ea.
+Bathrooms,Tub & Shower,ba-11,Tub Tile Surround Tear Out + Tile Install (incl. tub),2250,ea.
+Bathrooms,Tub & Shower,ba-12,Shower Plastic Insert Tear Out + New Insert,825,ea.
+Bathrooms,Tub & Shower,ba-13,Tub Plastic Insert Tear Out + New Insert & Tub,1575,ea.
+Bathrooms,Tub & Shower,ba-16,HVL (needed if no window),275,ea.
+Systems & Structure,HVAC,as-01,Furnace,3350,ea.
+Systems & Structure,HVAC,as-02,Condensing Unit,3300,ea.
+Systems & Structure,HVAC,as-03,Package Unit,4700,ea.
+Systems & Structure,HVAC,as-04,A-Coil (if no condensing unit),1625,ea.
+Systems & Structure,HVAC,as-05,Ducting (if NO HVAC),3200,ea.
+Systems & Structure,HVAC,as-06,Duct Cleaning — Floor Vents,550,ea.
+Systems & Structure,HVAC,as-07,Window Unit Replacement 220,575,ea.
+Systems & Structure,HVAC,as-08,Hot Water Heater w/ Expansion Tank,1425,ea.
+Systems & Structure,HVAC,as-09,Hot Water Heater Expansion Tank Only,200,ea.
+Systems & Structure,Electrical,as-10,Switches / Outlets,1400,house
+Systems & Structure,Electrical,as-11,Standard Electrical,1650,house
+Systems & Structure,Electrical,as-18,Electrical Panel Swap to 200A,2350,ea.
+Systems & Structure,Electrical,as-19,Full Electrical Rewire (to Studs),5.65,sqft
+Systems & Structure,Electrical,as-20,Full Electrical Rewire (leaving Drywall),9.15,sqft
+Systems & Structure,Electrical,as-24,Aluminum Wiring,2450,variable
+Systems & Structure,Structural,as-12,Subfloor,8.2,sqft
+Systems & Structure,Structural,as-13,Framing,950,variable
+Systems & Structure,Structural,as-14,Structural (Pier),375,pier
+Systems & Structure,Structural,as-15,Structural Foam Injection,5.85,sqft of affected area
+Systems & Structure,Structural,as-16,Roof,1100,"225 sqft L&M"
+Systems & Structure,Structural,as-17,Plumbing,1000,variable
+Systems & Structure,Insulation & Drywall,as-21,Wall Insulation (to Studs),1.2,sqft
+Systems & Structure,Insulation & Drywall,as-22,Attic Insulation,1225,"1,600 sqft house"
+Systems & Structure,Insulation & Drywall,as-23,New Drywall to Studs (L&M),5.2,sqft
+Exterior,Fence,ex-01,Fence Repair — Chain Link / Wood Gate,225,variable
+Exterior,Fence,ex-02,Fence Repair — Chain Link,275,LF
+Exterior,Fence,ex-03,Fence Repair — Privacy 6ft,30,LF
+Exterior,Siding,ex-05,Vinyl Siding (10'x10'),300,square
+Exterior,Siding,ex-07,Exterior Paint,2.6,sqft
+Exterior,Siding,ex-08,Exterior Wood Repair,525,variable
+Exterior,Siding,ex-09,Siding Repair (10'x10'),975,section
+Exterior,Windows,ex-13,Aluminum Window Paint (Int/Ext),700,house
+Exterior,Windows,ex-14,Windows (3x5 sash),425,ea.
+Exterior,Windows,ex-15,Window Repair — Non-Insulated (6x6+),35,sf
+Exterior,Windows,ex-16,Window Repair — Insulated (6x6+),40,sf
+Exterior,Windows,ex-17,Aluminum Framed Window Pane,100,pane
+Exterior,Garage,ex-21,Garage Door — 1 Car,975,ea.
+Exterior,Garage,ex-22,Garage Door — 2 Car (Installed),1225,ea.
+Exterior,Garage,ex-23,Garage Conversion,8850,ea.
+Exterior,Trees,ex-10,Tree Trimming,450,variable
+Exterior,Trees,ex-11,Tree Removal (w/o stump),1450,tree
+Exterior,Trees,ex-12,Stump Grinding,250,stump
+Exterior,Other,ex-04,Landscaping,450,variable
+Exterior,Other,ex-06,Tuck Pointing,225,variable
+Exterior,Other,ex-18,Guttering,4.15,LF
+Exterior,Other,ex-19,Concrete w/ Demo,200,sqft
+Exterior,Other,ex-20,Mowing (summer, every 2 weeks),45,mowing
