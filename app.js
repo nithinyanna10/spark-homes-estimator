@@ -538,20 +538,150 @@ function renderRoomList(rooms) {
   return `<div class="space-y-2 mb-4">${rooms.map(renderRoomCard).join('')}</div>`;
 }
 
+const CHEVRON_ICON = `<svg class="w-4 h-4 shrink-0 transition-transform" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.25a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" clip-rule="evenodd" /></svg>`;
+
 function renderRoomCard(room) {
+  const expanded = state.expandedRooms.has(room.instanceId);
+  const total = roomTotal(room);
   return `
-    <div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-3">
-      <div class="flex items-center justify-between mb-2">
-        <div>
+    <div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden">
+      <div class="flex items-center px-4 min-h-[56px]">
+        <button data-action="toggle-room" data-id="${room.instanceId}" class="flex-1 py-3 text-left">
           <p class="font-medium text-sm">${escapeHTML(room.label)}</p>
-          <p class="text-xs text-slate-400">${escapeHTML(room.type)}</p>
-        </div>
+          <p class="text-xs text-slate-400 tabular-nums">${total > 0 ? `$${total.toFixed(2)}` : escapeHTML(room.type)}</p>
+        </button>
         <button data-action="delete-room" data-id="${room.instanceId}" class="min-h-[44px] min-w-[44px] text-red-400" aria-label="Remove ${escapeAttr(room.label)}">${TRASH_ICON}</button>
+        <button data-action="toggle-room" data-id="${room.instanceId}" class="min-h-[44px] min-w-[44px] flex items-center justify-center text-slate-400 ${expanded ? '[&>svg]:rotate-180' : ''}">
+          ${CHEVRON_ICON}
+        </button>
       </div>
-      <div class="flex flex-wrap gap-1.5">
-        ${Object.keys(room.groups).map((g) => `<span class="text-xs px-2 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">${escapeHTML(g)}</span>`).join('')}
+      ${expanded ? renderRoomGroups(room) : ''}
+    </div>
+  `;
+}
+
+function renderRoomGroups(room) {
+  return `
+    <div class="border-t border-slate-100 dark:border-slate-800 divide-y divide-slate-100 dark:divide-slate-800">
+      ${Object.keys(room.groups).map((g) => renderRoomGroupPanel(room, g)).join('')}
+    </div>
+  `;
+}
+
+function renderRoomGroupPanel(room, groupName) {
+  const key = roomGroupKey(room.instanceId, groupName);
+  const expanded = state.expandedRoomGroups.has(key);
+  const gs = room.groups[groupName];
+  const selCount = Object.keys(gs.items).length;
+  return `
+    <div>
+      <button data-action="toggle-room-group" data-key="${key}"
+        class="w-full min-h-[44px] px-4 py-3 flex items-center justify-between text-left">
+        <span class="font-medium text-sm">${escapeHTML(groupName)}</span>
+        <span class="flex items-center gap-2 text-xs text-slate-400">
+          ${gs.noActionNeeded ? '<span class="text-green-600 font-medium">✓ no action</span>' : selCount > 0 ? `<span>${selCount} selected</span>` : ''}
+          <span class="${expanded ? 'rotate-180' : ''} transition-transform inline-block">
+            ${CHEVRON_ICON}
+          </span>
+        </span>
+      </button>
+      ${expanded ? renderRoomGroupBody(room, groupName, key, gs) : ''}
+    </div>
+  `;
+}
+
+function renderRoomGroupBody(room, groupName, key, gs) {
+  const available = itemsInGroup(groupName).filter((item) => !gs.items[item.id]);
+  const selected = Object.entries(gs.items);
+  return `
+    <div class="px-4 pb-3 border-t border-slate-100 dark:border-slate-800 space-y-3">
+      <button data-action="toggle-no-action-needed"
+        data-instance-id="${room.instanceId}" data-group="${escapeAttr(groupName)}"
+        class="min-h-[44px] flex items-center gap-2 text-sm ${gs.noActionNeeded ? 'text-green-600' : 'text-slate-500'}">
+        <span class="w-5 h-5 rounded border flex items-center justify-center shrink-0 ${gs.noActionNeeded ? 'bg-green-500 border-green-500 text-white text-xs' : 'border-slate-300 dark:border-slate-600'}">${gs.noActionNeeded ? '✓' : ''}</span>
+        No action needed
+      </button>
+      ${gs.noActionNeeded ? '' : `
+        ${selected.length > 0 ? `
+          <div class="space-y-2">
+            <p class="text-xs uppercase tracking-wide text-slate-400 pt-1">Selected</p>
+            ${selected.map(([id, entry]) => renderSelectedRoomItem(room.instanceId, groupName, id, entry)).join('')}
+          </div>
+        ` : ''}
+        ${available.length > 0 ? `
+          <div class="space-y-1">
+            <p class="text-xs uppercase tracking-wide text-slate-400 pt-1">Available</p>
+            ${available.map((item) => `
+              <div class="flex items-center gap-2 py-1">
+                <div class="flex-1 min-w-0">
+                  <p class="text-sm truncate">${escapeHTML(item.name)}</p>
+                  <p class="text-xs text-slate-400 tabular-nums">$${item.cost.toFixed(2)} / ${escapeHTML(item.unit)}</p>
+                </div>
+                <button data-action="select-room-item"
+                  data-instance-id="${room.instanceId}" data-group="${escapeAttr(groupName)}" data-item-id="${item.id}"
+                  class="shrink-0 min-h-[36px] px-3 rounded-lg bg-accent-50 dark:bg-slate-800 text-accent-600 text-xs font-medium">+ Add</button>
+              </div>
+            `).join('')}
+          </div>
+        ` : ''}
+        ${renderAddRoomItemForm(room.instanceId, groupName, key)}
+      `}
+    </div>
+  `;
+}
+
+function renderSelectedRoomItem(instanceId, groupName, itemId, entry) {
+  const { name, unit, baseCost } = resolveRoomItemDisplay(itemId, entry);
+  const unitCost = Number.isFinite(entry.unitCostOverride) ? entry.unitCostOverride : baseCost;
+  return `
+    <div class="bg-accent-50 dark:bg-slate-800 rounded-lg px-3 py-2">
+      <div class="flex items-center gap-2">
+        <p class="text-sm font-medium flex-1 truncate">${escapeHTML(name)}</p>
+        <button data-action="deselect-room-item"
+          data-instance-id="${instanceId}" data-group="${escapeAttr(groupName)}" data-item-id="${itemId}"
+          class="min-h-[36px] min-w-[36px] text-slate-400 text-base leading-none shrink-0">✕</button>
+      </div>
+      <div class="flex items-center flex-wrap gap-x-3 gap-y-1 mt-1">
+        <div class="flex items-center gap-1">
+          <button data-action="adjust-room-item-qty"
+            data-instance-id="${instanceId}" data-group="${escapeAttr(groupName)}" data-item-id="${itemId}" data-delta="-1"
+            class="min-h-[32px] min-w-[32px] rounded-lg bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 text-sm font-bold">−</button>
+          <span class="text-sm tabular-nums w-6 text-center">${entry.qty}</span>
+          <button data-action="adjust-room-item-qty"
+            data-instance-id="${instanceId}" data-group="${escapeAttr(groupName)}" data-item-id="${itemId}" data-delta="1"
+            class="min-h-[32px] min-w-[32px] rounded-lg bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 text-sm font-bold">+</button>
+          <span class="text-xs text-slate-400">${escapeHTML(unit)}</span>
+        </div>
+        <div class="flex items-center gap-1 ml-auto">
+          <span class="text-xs text-slate-400">$/unit</span>
+          <input data-action="edit-room-item-cost"
+            data-instance-id="${instanceId}" data-group="${escapeAttr(groupName)}" data-item-id="${itemId}"
+            type="number" step="0.01" value="${unitCost}"
+            class="w-20 h-8 text-sm bg-white dark:bg-slate-700 rounded-lg px-2 border border-slate-200 dark:border-slate-600 tabular-nums" />
+        </div>
+        <p class="text-xs text-slate-500 tabular-nums ml-auto">= $${(entry.qty * unitCost).toFixed(2)}</p>
       </div>
     </div>
+  `;
+}
+
+function renderAddRoomItemForm(instanceId, groupName, key) {
+  if (state.addRoomItemOpenKey !== key) {
+    return `
+      <button data-action="open-add-room-item" data-key="${key}"
+        class="min-h-[44px] text-sm text-accent-600 font-medium">+ Custom item</button>
+    `;
+  }
+  return `
+    <form data-action="submit-add-room-item"
+      data-instance-id="${instanceId}" data-group="${escapeAttr(groupName)}"
+      class="flex flex-wrap items-center gap-2">
+      <input name="name" placeholder="Item name" required class="flex-1 min-h-[44px] text-sm bg-white dark:bg-slate-800 rounded-lg px-2 border border-slate-200 dark:border-slate-700" />
+      <input name="cost" type="number" step="0.01" placeholder="Cost" class="w-20 min-h-[44px] text-sm bg-white dark:bg-slate-800 rounded-lg px-2 border border-slate-200 dark:border-slate-700" />
+      <input name="unit" placeholder="Unit" class="w-20 min-h-[44px] text-sm bg-white dark:bg-slate-800 rounded-lg px-2 border border-slate-200 dark:border-slate-700" />
+      <button type="submit" class="min-h-[44px] px-3 rounded-lg bg-accent-600 text-white text-sm font-medium">Add</button>
+      <button type="button" data-action="cancel-add-room-item" class="min-h-[44px] px-2 text-sm text-slate-500">Cancel</button>
+    </form>
   `;
 }
 
@@ -791,6 +921,38 @@ function attachEventListeners() {
           render();
         }
         break;
+      case 'toggle-room':
+        toggleSet(state.expandedRooms, el.dataset.id);
+        render();
+        break;
+      case 'toggle-room-group':
+        toggleSet(state.expandedRoomGroups, el.dataset.key);
+        render();
+        break;
+      case 'select-room-item':
+        selectRoomItem(el.dataset.instanceId, el.dataset.group, el.dataset.itemId);
+        render();
+        break;
+      case 'deselect-room-item':
+        deselectRoomItem(el.dataset.instanceId, el.dataset.group, el.dataset.itemId);
+        render();
+        break;
+      case 'adjust-room-item-qty':
+        adjustRoomItemQty(el.dataset.instanceId, el.dataset.group, el.dataset.itemId, Number(el.dataset.delta));
+        render();
+        break;
+      case 'toggle-no-action-needed':
+        toggleNoActionNeeded(el.dataset.instanceId, el.dataset.group);
+        render();
+        break;
+      case 'open-add-room-item':
+        state.addRoomItemOpenKey = el.dataset.key;
+        render();
+        break;
+      case 'cancel-add-room-item':
+        state.addRoomItemOpenKey = null;
+        render();
+        break;
     }
   });
 
@@ -798,13 +960,20 @@ function attachEventListeners() {
   // so re-rendering the whole tree never steals focus mid-type.
   root.addEventListener('change', (event) => {
     const el = event.target.closest('[data-action="edit-item-field"]');
-    if (!el) return;
-    const item = findPriceItem(el.dataset.id);
-    if (!item) return;
-    const field = el.dataset.field;
-    item[field] = field === 'cost' ? Number(el.value) : el.value;
-    saveJSON(STORAGE_KEYS.priceList, state.priceList);
-    render();
+    if (el) {
+      const item = findPriceItem(el.dataset.id);
+      if (!item) return;
+      const field = el.dataset.field;
+      item[field] = field === 'cost' ? Number(el.value) : el.value;
+      saveJSON(STORAGE_KEYS.priceList, state.priceList);
+      render();
+      return;
+    }
+    const costEl = event.target.closest('[data-action="edit-room-item-cost"]');
+    if (costEl) {
+      setRoomItemCostOverride(costEl.dataset.instanceId, costEl.dataset.group, costEl.dataset.itemId, costEl.value);
+      render();
+    }
   });
 
   root.addEventListener('submit', (event) => {
@@ -847,6 +1016,22 @@ function attachEventListeners() {
       const data = new FormData(renameForm);
       renameProject(renameForm.dataset.id, String(data.get('name') || ''));
       state.renamingProjectId = null;
+      render();
+      return;
+    }
+
+    const addRoomItemForm = event.target.closest('[data-action="submit-add-room-item"]');
+    if (addRoomItemForm) {
+      event.preventDefault();
+      const data = new FormData(addRoomItemForm);
+      const name = String(data.get('name') || '').trim();
+      if (!name) return;
+      addCustomRoomItem(addRoomItemForm.dataset.instanceId, addRoomItemForm.dataset.group, {
+        name,
+        cost: Number(data.get('cost')) || 0,
+        unit: String(data.get('unit') || '').trim()
+      });
+      state.addRoomItemOpenKey = null;
       render();
     }
   });
